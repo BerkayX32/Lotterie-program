@@ -1,0 +1,2 @@
+after the line which includes #Define __NR_exit_group 252, we write
+#Define __NR_schedull	253 in both unistd.hs

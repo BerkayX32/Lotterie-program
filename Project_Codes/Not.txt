@@ -1,0 +1,38 @@
+sched.c (kısım numaraları kodda var)
+41.satırda choice extern ediyoruz.
+614ten itibaren lottery scheduler başlıyor.
+ilk kısımda tüm userlar birer kez seçildi mi diye kontrol ediyoruz
+eğer seçildiyse p->ischosen değerlerini 0 lıyoruz.
+
+ikinci kısımda processler bekledikçe ticket değerlerini artırıyoruz.
+
+üçüncü kısımda p->ischosen değeri 0 yani ait oldukları user hiç seçilmemiş olan
+tüm processlerin ticket valuelarını topluyoruz ki random tickettan çıkardığımızda
+bu değeri 0ın altına inebilmesini garantileyelim.
+
+dördüncü kısımda random bir ticket değeri alıyoruz ve bu değer 0dan küçük mü
+ve seçilebilecek olan processlerin ticket toplamından küçük mü diye kontrol ediyoruz
+eğer sumoftickets dan büyükse modunu alıp 1 ekliyoruz. Sürekli ticket çıkarırken bir yerde
+randticket değerinin 0 ın altına inebilmesini sağlıyoruz.
+
+beşinci kısımda ise p->ischosen değeri 0 olan processlerin ticket değerlerini sürekli
+randticket değerimizden çıkarıyoz ve eğer sonuç 0ın altında ise o processi next olarak
+seçiyoruz. Seçilen processin p->ischosen değerini 1 yapıyoruz.
+Seçilen processin userid sini altıncı adımda kullanmak üzere tutuyoruz.
+
+altıncı adımda user idsi next olarak seçilen processin user idsi ile aynı olan 
+processlerin ischosen değerlerini 1 yapıyoruz ki o user birdaha seçilmesin. Farklı
+userdan process seçmesi için.
+------------------------
+fork.c 
+her processe default olarak ticket=5 ve ischosen değerini 0 olarak atıyoruz.
+prevJiffies i de jiffies e eşitliyoruz
+-------------------------
+sched.h
+421. satırda ticket ve ischosen değerlerini tanımlıyoruz.
+
+
+Lottery schedulera geçince VB donuyor ve rebootladığımızda ise dosyaları fixleme
+seçenekleri geliyor ve bu işleme devam edince vb eksik geliyor çoğu şey gözükmüyor
+biz de vb ı yeniden kurup system call u tekrar eklemek ve kerneli compile etmek 
+zorunda kalıyoruz.
